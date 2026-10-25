@@ -1,5 +1,5 @@
 import { useEffect,useState } from 'react';
-import { Button,FlatList,SafeAreaView,Text,View } from 'react-native';
+import { Button,FlatList,SafeAreaView,StyleSheet,Text,View } from 'react-native';
 
 type Sneaker={id:number;marca:string;modelo:string;precio:number;talla:number;stock:number};
 const API_URL='http://192.168.1.50:3000';
@@ -60,18 +60,27 @@ export default function App(){
    }catch{setError('Error al eliminar.');}
  }
 
- return <SafeAreaView>
-   <Text>👟 Sneaker Vault</Text>
+ return <SafeAreaView style={styles.container}>
+   <Text style={styles.title}>👟 Inventario</Text>
    {error!==''&&<Text>{error}</Text>}
    <Button title="Nueva" onPress={crear}/>
    <FlatList
      data={items}
      keyExtractor={x=>String(x.id)}
-     renderItem={({item})=><View>
-       <Text>{item.marca} {item.modelo} · {Number(item.precio).toFixed(2)} € · {item.stock===0?'AGOTADO':'Stock '+item.stock}</Text>
+     renderItem={({item})=><View style={styles.card}>
+       <Text style={styles.model}>{item.modelo}</Text>
+       <Text>{item.marca} · {item.stock===0?<Text style={styles.soldOut}>AGOTADO</Text>:'Stock '+item.stock} · {Number(item.precio).toFixed(2)} €</Text>
        <Button title="Rebajar" onPress={()=>rebajar(item.id)}/>
        <Button title="Eliminar" onPress={()=>eliminar(item.id)}/>
      </View>}
    />
  </SafeAreaView>;
 }
+
+const styles=StyleSheet.create({
+ container:{flex:1,backgroundColor:'#F8FAFC',padding:20},
+ title:{fontSize:28,fontWeight:'800',marginBottom:12},
+ card:{backgroundColor:'#FFF',padding:16,borderRadius:16,marginTop:12},
+ model:{fontSize:18,fontWeight:'700'},
+ soldOut:{fontWeight:'800'},
+});
