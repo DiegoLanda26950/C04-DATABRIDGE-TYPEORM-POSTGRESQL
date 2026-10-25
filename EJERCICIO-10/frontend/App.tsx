@@ -1,5 +1,5 @@
 import { useEffect,useState } from 'react';
-import { Button,FlatList,SafeAreaView,Text,TextInput,View } from 'react-native';
+import { Button,FlatList,SafeAreaView,StyleSheet,Text,TextInput,View } from 'react-native';
 
 type Destino={id:number;ciudad:string;pais:string;descripcion:string;visitado:boolean};
 const API_URL='http://192.168.1.50:3000';
@@ -71,19 +71,19 @@ export default function App(){
    }catch{setError('No se pudo eliminar.');}
  }
 
- return <SafeAreaView>
-   <Text>🌍 Wander</Text>
+ return <SafeAreaView style={styles.container}>
+   <Text style={styles.title}>🌍 Wander</Text>
    {error!==''&&<Text>{error}</Text>}
-   <TextInput placeholder="Ciudad" value={ciudad} onChangeText={setCiudad}/>
-   <TextInput placeholder="País" value={pais} onChangeText={setPais}/>
+   <TextInput style={styles.input} placeholder="Ciudad" value={ciudad} onChangeText={setCiudad}/>
+   <TextInput style={styles.input} placeholder="País" value={pais} onChangeText={setPais}/>
    <Button title="Crear destino" onPress={crear}/>
    <FlatList
      data={destinos}
      keyExtractor={x=>String(x.id)}
-     renderItem={({item})=><View>
-       <Text>{item.ciudad} · {item.pais}</Text>
-       <Text>{item.descripcion}</Text>
-       <Text>{item.visitado?'✓ Visitado':'Pendiente'}</Text>
+     renderItem={({item})=><View style={styles.card}>
+       <Text style={styles.name}>{item.ciudad}</Text>
+       <Text style={styles.meta}>{item.pais} · {item.descripcion}</Text>
+       <Text style={styles.status}>{item.visitado?'✓ Visitado':'Pendiente'}</Text>
        <Button title={item.visitado?'Desmarcar visitado':'Marcar como visitado'} onPress={()=>alternarVisitado(item)}/>
        <Button title="Editar" onPress={()=>editar(item.id)}/>
        <Button title="Eliminar" onPress={()=>eliminar(item.id)}/>
@@ -91,3 +91,13 @@ export default function App(){
    />
  </SafeAreaView>;
 }
+
+const styles=StyleSheet.create({
+ container:{flex:1,backgroundColor:'#F8FAFC',padding:20},
+ title:{fontSize:28,fontWeight:'800',marginBottom:12},
+ input:{backgroundColor:'#FFF',padding:12,borderRadius:12,marginBottom:8},
+ card:{backgroundColor:'#FFF',padding:16,borderRadius:16,marginTop:12},
+ name:{fontSize:18,fontWeight:'700'},
+ meta:{color:'#64748B',marginTop:4},
+ status:{fontWeight:'700',marginVertical:8},
+});
