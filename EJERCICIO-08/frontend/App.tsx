@@ -1,7 +1,7 @@
 // App.tsx
 // RESPONSABILIDAD: mostrar una Playlist relacionada y añadir canciones.
 import { useEffect, useState } from 'react';
-import { Button, FlatList, SafeAreaView, Text, View } from 'react-native';
+import { Button, FlatList, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 type Cancion={id:number;titulo:string;artista:string};
 type Playlist={id:number;nombre:string;canciones:Cancion[]};
@@ -28,10 +28,18 @@ export default function App(){
 
  if(!playlist)return <Text>Cargando...</Text>;
 
- return <SafeAreaView>
-   <Text>🎵 {playlist.nombre}</Text>
+ return <SafeAreaView style={styles.container}>
+   <Text style={styles.title}>🎵 {playlist.nombre}</Text>
    <FlatList data={playlist.canciones} keyExtractor={x=>String(x.id)}
-     renderItem={({item})=><View><Text>{item.titulo}</Text><Text>{item.artista}</Text></View>}/>
+     renderItem={({item})=><View style={styles.card}><Text style={styles.song}>{item.titulo}</Text><Text style={styles.artist}>{item.artista}</Text></View>}/>
    <Button title="+ Añadir canción" onPress={anadir}/>
  </SafeAreaView>;
 }
+
+const styles=StyleSheet.create({
+ container:{flex:1,backgroundColor:'#F8FAFC',padding:20},
+ title:{fontSize:28,fontWeight:'800',marginBottom:12},
+ card:{backgroundColor:'#FFF',padding:16,borderRadius:16,marginBottom:12},
+ song:{fontSize:18,fontWeight:'700'},
+ artist:{color:'#64748B',marginTop:4},
+});
