@@ -18,4 +18,7 @@ export class Pelicula {
 
   @Column('decimal', { precision: 3, scale: 1 })
   puntuacion: number;
+
+  @Column({ default: false })
+  favorita: boolean;
 }

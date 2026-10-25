@@ -12,8 +12,8 @@ export class PeliculasService implements OnModuleInit {
   async onModuleInit(){
     if(await this.repository.count()===0){
       await this.repository.save([
-        this.repository.create({titulo:'Interstellar',genero:'Ciencia ficción',anio:2014,puntuacion:9.2}),
-        this.repository.create({titulo:'Coco',genero:'Animación',anio:2017,puntuacion:8.8}),
+        this.repository.create({titulo:'Interstellar',genero:'Ciencia ficción',anio:2014,puntuacion:9.2,favorita:true}),
+        this.repository.create({titulo:'Coco',genero:'Animación',anio:2017,puntuacion:8.8,favorita:false}),
       ]);
     }
   }
